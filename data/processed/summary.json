@@ -1,0 +1,354 @@
+{
+  "stats": {
+    "n": 744,
+    "mae": 2008.5,
+    "rmse": 2499.7,
+    "bias": 1729.1,
+    "pctOver": 84.3
+  },
+  "meanForecast": 13026.6,
+  "meanActual": 11297.5,
+  "errorQuantiles": {
+    "p10": -478.1,
+    "p90": 4143.9
+  },
+  "biasCorrectedMae": 1399.4,
+  "byHorizon": [
+    {
+      "bucket": "12-18h",
+      "n": 155,
+      "mae": 2135.7,
+      "rmse": 2678.4,
+      "bias": 2089.7,
+      "pctOver": 91.6
+    },
+    {
+      "bucket": "18-24h",
+      "n": 186,
+      "mae": 2198.7,
+      "rmse": 2730.7,
+      "bias": 2099.2,
+      "pctOver": 90.9
+    },
+    {
+      "bucket": "24-30h",
+      "n": 186,
+      "mae": 1878.0,
+      "rmse": 2269.6,
+      "bias": 1411.8,
+      "pctOver": 76.3
+    },
+    {
+      "bucket": "30-36h",
+      "n": 186,
+      "mae": 1875.0,
+      "rmse": 2338.3,
+      "bias": 1388.5,
+      "pctOver": 79.6
+    },
+    {
+      "bucket": "36-42h",
+      "n": 31,
+      "mae": 1815.5,
+      "rmse": 2375.6,
+      "bias": 1653.5,
+      "pctOver": 83.9
+    }
+  ],
+  "byHourOfDay": [
+    {
+      "hourUtc": 0,
+      "n": 31,
+      "mae": 2020.4,
+      "rmse": 2534.5,
+      "bias": 1953.0,
+      "pctOver": 93.5
+    },
+    {
+      "hourUtc": 1,
+      "n": 31,
+      "mae": 2163.2,
+      "rmse": 2694.6,
+      "bias": 2134.0,
+      "pctOver": 93.5
+    },
+    {
+      "hourUtc": 2,
+      "n": 31,
+      "mae": 2266.0,
+      "rmse": 2825.0,
+      "bias": 2243.2,
+      "pctOver": 90.3
+    },
+    {
+      "hourUtc": 3,
+      "n": 31,
+      "mae": 2380.2,
+      "rmse": 2935.8,
+      "bias": 2296.8,
+      "pctOver": 87.1
+    },
+    {
+      "hourUtc": 4,
+      "n": 31,
+      "mae": 2376.0,
+      "rmse": 2923.2,
+      "bias": 2302.1,
+      "pctOver": 93.5
+    },
+    {
+      "hourUtc": 5,
+      "n": 31,
+      "mae": 2379.1,
+      "rmse": 2921.4,
+      "bias": 2308.8,
+      "pctOver": 90.3
+    },
+    {
+      "hourUtc": 6,
+      "n": 31,
+      "mae": 2319.8,
+      "rmse": 2858.6,
+      "bias": 2259.0,
+      "pctOver": 93.5
+    },
+    {
+      "hourUtc": 7,
+      "n": 31,
+      "mae": 2171.2,
+      "rmse": 2721.2,
+      "bias": 2078.7,
+      "pctOver": 90.3
+    },
+    {
+      "hourUtc": 8,
+      "n": 31,
+      "mae": 1987.9,
+      "rmse": 2478.4,
+      "bias": 1839.7,
+      "pctOver": 90.3
+    },
+    {
+      "hourUtc": 9,
+      "n": 31,
+      "mae": 1958.1,
+      "rmse": 2437.3,
+      "bias": 1806.5,
+      "pctOver": 87.1
+    },
+    {
+      "hourUtc": 10,
+      "n": 31,
+      "mae": 1908.0,
+      "rmse": 2379.8,
+      "bias": 1699.2,
+      "pctOver": 74.2
+    },
+    {
+      "hourUtc": 11,
+      "n": 31,
+      "mae": 1916.4,
+      "rmse": 2304.7,
+      "bias": 1547.5,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 12,
+      "n": 31,
+      "mae": 1891.6,
+      "rmse": 2257.0,
+      "bias": 1368.8,
+      "pctOver": 74.2
+    },
+    {
+      "hourUtc": 13,
+      "n": 31,
+      "mae": 1893.3,
+      "rmse": 2241.0,
+      "bias": 1321.7,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 14,
+      "n": 31,
+      "mae": 1864.9,
+      "rmse": 2225.8,
+      "bias": 1310.9,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 15,
+      "n": 31,
+      "mae": 1793.6,
+      "rmse": 2204.9,
+      "bias": 1222.8,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 16,
+      "n": 31,
+      "mae": 1832.1,
+      "rmse": 2245.4,
+      "bias": 1290.3,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 17,
+      "n": 31,
+      "mae": 1906.8,
+      "rmse": 2309.8,
+      "bias": 1310.6,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 18,
+      "n": 31,
+      "mae": 1932.4,
+      "rmse": 2380.8,
+      "bias": 1342.7,
+      "pctOver": 77.4
+    },
+    {
+      "hourUtc": 19,
+      "n": 31,
+      "mae": 1898.5,
+      "rmse": 2387.6,
+      "bias": 1387.9,
+      "pctOver": 80.6
+    },
+    {
+      "hourUtc": 20,
+      "n": 31,
+      "mae": 1848.0,
+      "rmse": 2353.3,
+      "bias": 1438.5,
+      "pctOver": 83.9
+    },
+    {
+      "hourUtc": 21,
+      "n": 31,
+      "mae": 1831.9,
+      "rmse": 2350.0,
+      "bias": 1561.1,
+      "pctOver": 80.6
+    },
+    {
+      "hourUtc": 22,
+      "n": 31,
+      "mae": 1815.5,
+      "rmse": 2375.6,
+      "bias": 1653.5,
+      "pctOver": 83.9
+    },
+    {
+      "hourUtc": 23,
+      "n": 31,
+      "mae": 1848.7,
+      "rmse": 2363.5,
+      "bias": 1821.7,
+      "pctOver": 93.5
+    }
+  ],
+  "distribution": [
+    {
+      "binStart": -5000,
+      "count": 1
+    },
+    {
+      "binStart": -4000,
+      "count": 2
+    },
+    {
+      "binStart": -3000,
+      "count": 5
+    },
+    {
+      "binStart": -2000,
+      "count": 38
+    },
+    {
+      "binStart": -1000,
+      "count": 71
+    },
+    {
+      "binStart": 0,
+      "count": 136
+    },
+    {
+      "binStart": 1000,
+      "count": 197
+    },
+    {
+      "binStart": 2000,
+      "count": 132
+    },
+    {
+      "binStart": 3000,
+      "count": 80
+    },
+    {
+      "binStart": 4000,
+      "count": 38
+    },
+    {
+      "binStart": 5000,
+      "count": 31
+    },
+    {
+      "binStart": 6000,
+      "count": 13
+    }
+  ],
+  "worstDays": [
+    {
+      "date": "2026-01-28",
+      "mae": 5345.3,
+      "bias": 5345.3
+    },
+    {
+      "date": "2026-01-12",
+      "mae": 5069.5,
+      "bias": 5069.5
+    },
+    {
+      "date": "2026-01-11",
+      "mae": 4778.2,
+      "bias": 4778.2
+    },
+    {
+      "date": "2026-01-21",
+      "mae": 3856.0,
+      "bias": 3856.0
+    },
+    {
+      "date": "2026-01-27",
+      "mae": 3331.4,
+      "bias": 3331.4
+    },
+    {
+      "date": "2026-01-02",
+      "mae": 3153.8,
+      "bias": 3153.8
+    },
+    {
+      "date": "2026-01-22",
+      "mae": 2664.8,
+      "bias": 2664.8
+    },
+    {
+      "date": "2026-01-03",
+      "mae": 2273.0,
+      "bias": 2273.0
+    }
+  ],
+  "persistence": {
+    "n": 744,
+    "mae": 3973.5,
+    "rmse": 5148.5,
+    "bias": 289.7,
+    "pctOver": 51.6
+  },
+  "skillVsPersistence": 0.495,
+  "totalShortfallMwh": 1390391,
+  "totalSurplusMwh": 103916
+}
