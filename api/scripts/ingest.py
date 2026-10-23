@@ -114,11 +114,15 @@ def main() -> None:
             hour["bandHigh"] = round(hour["forecast"] - q10, 1)
             del hour["_publish"], hour["_start"]
 
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    with open(OUT_DIR / "days.json", "w") as fh:
-        json.dump(days, fh)
-    with open(OUT_DIR / "summary.json", "w") as fh:
-        json.dump(summary, fh, indent=2)
+    # Write the repo-level copy, plus a copy bundled inside api/ so the
+    # backend folder is self-contained when deployed on its own.
+    api_data = REPO_ROOT / "api" / "data"
+    for target in (OUT_DIR, api_data):
+        target.mkdir(parents=True, exist_ok=True)
+        with open(target / "days.json", "w") as fh:
+            json.dump(days, fh)
+        with open(target / "summary.json", "w") as fh:
+            json.dump(summary, fh, indent=2)
 
     s = summary["stats"]
     print(f"days built: {len(days)}")

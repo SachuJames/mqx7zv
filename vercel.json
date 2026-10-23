@@ -1,1 +1,1 @@
-{"buildCommand":"cd web && npm install && npm run build","functions":{"api/index.py":{"includeFiles":"data/**"}},"outputDirectory":"web/dist","rewrites":[{"destination":"/api/index.py","source":"/api/(.*)"}]}
+{"$schema":"https://openapi.vercel.sh/vercel.json","rewrites":[{"destination":{"service":"api"},"source":"/api/(.*)"},{"destination":{"service":"web"},"source":"/(.*)"}],"services":{"api":{"entrypoint":"main:app","root":"api/"},"web":{"root":"web/"}}}

@@ -2,7 +2,8 @@
 
 The API never calls Elexon at request time. Ingestion runs separately
 (see scripts/ingest.py) and this module just reads its output, from
-DATA_DIR if set, otherwise the repo's data/processed folder.
+DATA_DIR if set, otherwise the bundled copy in api/data, falling back
+to the repo's data/processed folder.
 """
 
 from __future__ import annotations
@@ -11,7 +12,12 @@ import json
 import os
 from pathlib import Path
 
-_DEFAULT_DIR = Path(__file__).resolve().parents[2] / "data" / "processed"
+_HERE = Path(__file__).resolve()
+_CANDIDATES = [
+    _HERE.parents[1] / "data",  # api/data, bundled with the backend
+    _HERE.parents[2] / "data" / "processed",  # repo-level data/processed
+]
+_DEFAULT_DIR = next((p for p in _CANDIDATES if (p / "days.json").exists()), _CANDIDATES[0])
 
 
 class Store:
