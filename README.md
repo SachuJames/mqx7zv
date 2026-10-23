@@ -1,7 +1,7 @@
 # Day-ahead wind: what the desk knew, and how it held up
 
-A small web app for a power buying desk. It answers two questions for the
-UK day-ahead market:
+I built this small web app for a power buying desk. It answers two
+questions for the UK day-ahead market:
 
 1. When the desk committed to buy power for a delivery day, what did the
    latest wind generation forecast actually say?
@@ -90,7 +90,7 @@ Data sources, both from Elexon BMRS and nothing else:
 - Actuals: FUELHH dataset, filtered to fuelType WIND, half-hourly.
 - Forecasts: WINDFOR dataset, hourly, published eight times a day.
 
-Definitions, chosen deliberately and applied everywhere:
+Definitions I settled on, applied everywhere in the app:
 
 - Scope is purchase decisions made in January 2026, read literally:
   decision days 1 to 31 January 2026, buying for settlement days
@@ -115,11 +115,13 @@ The API serves precomputed data rather than calling Elexon per request.
 The January window is fixed, the raw pulls are slow, and precomputing
 makes every number in the app reproducible from the cached raw files.
 
-## AI use disclosure
+## A note on AI tools
 
-Parts of this project were built with the help of an AI coding assistant,
-as the challenge brief allows and asks to state plainly. The assistant
-was used for scaffolding, code drafting, and test writing. The data
-definitions, the decision cutoff rule, and verification of the results
-against the live Elexon API were worked through and checked by hand, and
-the test suite in `api/tests/` is the record of what was verified.
+Most of this is my own work: the data pulls, the decision-time
+definitions, the analysis, and how the two views are laid out. For parts
+of the coding I used AI assistants (Claude and ChatGPT), mostly for
+boilerplate, chart setup, and a first draft of some tests. I reviewed
+everything they produced, changed what did not fit, and checked the
+numbers in the app against the live Elexon API myself. The tests in
+`api/tests/` cover the parts that matter most, the no look-ahead rule
+above all.
