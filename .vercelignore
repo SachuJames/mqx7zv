@@ -1,3 +1,5 @@
 api/scripts
 api/tests
+api/Dockerfile
+web/Dockerfile
 web/node_modules
