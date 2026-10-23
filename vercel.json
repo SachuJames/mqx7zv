@@ -1,0 +1,1 @@
+{"buildCommand":"cd web && npm install && npm run build","functions":{"api/index.py":{"includeFiles":"data/**"}},"outputDirectory":"web/dist","rewrites":[{"destination":"/api/index.py","source":"/api/(.*)"}]}
