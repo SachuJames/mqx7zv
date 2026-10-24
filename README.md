@@ -7,7 +7,7 @@ questions for the UK day-ahead market:
    latest wind generation forecast actually say?
 2. How accurate was that forecast, in numbers the desk can plan around?
 
-Live deployment: to be added.
+Live deployment: https://mqx7zv.vercel.app
 
 ## Why decision time matters
 
