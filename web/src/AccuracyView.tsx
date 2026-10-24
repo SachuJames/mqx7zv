@@ -60,15 +60,17 @@ export default function AccuracyView() {
         <div className="card">
           <span className="card-label">MAE if bias removed</span>
           <strong>{fmtMw(summary.biasCorrectedMae)}</strong>
-          <span className="card-sub">the cost of the bias, in accuracy terms</span>
+          <span className="card-sub">in-sample illustration, same January data</span>
         </div>
       </div>
 
       <p className="takeaway">
         Buying on the raw forecast left the desk roughly{' '}
         {summary.totalShortfallMwh.toLocaleString('en-GB')} MWh short across January,
-        energy that had to be covered later at balancing prices, against{' '}
+        energy that had to be found later in the balancing market, against{' '}
         {summary.totalSurplusMwh.toLocaleString('en-GB')} MWh bought but not needed.
+        These are energy amounts, not money: what the shortfall cost depends on
+        balancing prices at the time, which are not in this dataset.
       </p>
 
       <div className="grid-2">
@@ -183,6 +185,12 @@ export default function AccuracyView() {
           it committed. Actuals are FUELHH wind generation, averaged from
           half-hourly to hourly to match the forecast resolution. Persistence
           means using the previous day's actual at the same hour as the forecast.
+          Two honesty notes. The bias correction and the error band are computed
+          from the same January observations they are shown against, so they are
+          retrospective illustrations, not estimates of live performance; a live
+          version would use a trailing window of past errors only. And shortfall
+          and surplus throughout are energy amounts in MWh, not financial results:
+          this data cannot show what the desk actually paid or lost.
         </p>
       </section>
     </div>

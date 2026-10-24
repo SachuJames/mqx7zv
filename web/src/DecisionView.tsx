@@ -109,9 +109,21 @@ export default function DecisionView() {
       <section className="panel">
         <h2>What the desk saw vs what happened</h2>
         <p className="panel-note">
-          The shaded band is where actual generation landed in 80% of hours across
-          January, based on past decision-time errors. The bias-corrected line takes
-          the month's average over-forecast off the raw forecast.
+          The shaded band is built from January's own decision-time errors, 10th to
+          90th percentile. Actual generation fell inside it in about 80% of January
+          hours, which is true by construction: it describes January, and is not a
+          promise about coverage on future days. The bias-corrected line takes the
+          month's average over-forecast off the raw forecast. That correction is also
+          worked out on the same January data it is applied to, so read it as an
+          illustration of what removing the bias would have done. A live desk would
+          correct using only errors from before the day, and would do a little worse.
+        </p>
+        <p className="panel-note">
+          Shortfall is an energy amount, not a cost. It is the extra MWh the desk had
+          to find because wind came in below the forecast it bought on. What that
+          energy cost depends on balancing prices at the time, which are not in this
+          dataset, so the app does not price it. The opposite case, wind beating the
+          forecast, is surplus: power bought ahead that was not needed.
         </p>
         <ResponsiveContainer width="100%" height={360}>
           <ComposedChart data={chartData} margin={{ top: 8, right: 16, bottom: 0, left: 8 }}>
@@ -119,9 +131,9 @@ export default function DecisionView() {
             <XAxis dataKey="label" tick={{ fontSize: 12 }} interval={2} />
             <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `${(v / 1000).toFixed(0)} GW`} />
             <Tooltip formatter={(value: unknown) => fmtMw(typeof value === 'number' ? value : null)} />
-            <Area dataKey="band" name="P10-P90 band" stroke="none" fill="#93c5fd" fillOpacity={0.35} />
+            <Area dataKey="band" name="January error band (P10-P90)" stroke="none" fill="#93c5fd" fillOpacity={0.35} />
             <Line dataKey="forecast" name="Forecast at decision time" stroke="#b45309" strokeWidth={2} dot={false} />
-            <Line dataKey="corrected" name="Bias-corrected forecast" stroke="#2563eb" strokeWidth={2} strokeDasharray="6 3" dot={false} />
+            <Line dataKey="corrected" name="Bias-corrected (illustrative)" stroke="#2563eb" strokeWidth={2} strokeDasharray="6 3" dot={false} />
             <Line dataKey="actual" name="Actual" stroke="#0f766e" strokeWidth={2.5} dot={false} />
           </ComposedChart>
         </ResponsiveContainer>

@@ -24,9 +24,16 @@ Scope: purchase decisions made in January 2026 (decision days Jan 1 to
 - The forecast was too high in 84% of hours, by 1,729 MW on average.
   Most of the error is this bias, not random noise.
 - Buying on the raw forecast left the desk about 1.39 million MWh
-  short over the month, to be covered later at balancing prices.
-- Removing the average bias cuts the error to about 1,399 MW. The
-  forecast still beats the simple fallback of using yesterday's
+  short over the month, to be found later in the balancing market.
+  Shortfall is an energy amount, not a money figure. What it cost
+  depends on balancing prices at the time, which are not in this data,
+  so the app does not price it. The opposite case is surplus: power
+  bought ahead that was not needed.
+- Removing the average bias cuts the error to about 1,399 MW. That
+  correction is worked out on the same January data it is applied to,
+  so it is an illustration, not a live performance estimate. A live
+  desk would correct from past errors only and do a little worse.
+  The forecast still beats the simple fallback of using yesterday's
   actuals (MAE 3,974 MW) by about half.
 
 ## Run it
@@ -77,8 +84,11 @@ times a day).
 - FUELHH is half-hourly and WINDFOR is hourly, so the actual for an
   hour is the mean of the two half hours.
 - The corrected forecast in the app is the forecast minus the month's
-  average error. The band is the 10th to 90th percentile of the
-  month's errors.
+  average error, and the band is the 10th to 90th percentile of the
+  month's errors. Both come from the same January data they are shown
+  against. Actual generation fell inside the band in about 80% of
+  January hours by construction; that is a description of January,
+  not a coverage guarantee for future days.
 - The API serves data prepared in advance by the ingest script, it
   does not call Elexon when you open a page. Every number can be
   reproduced from the cached raw files in `data/raw/`.
