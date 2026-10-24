@@ -1,38 +1,35 @@
 # Day-ahead wind: what the desk knew, and how it held up
 
-I built this small web app for a power buying desk. It answers two
-questions for the UK day-ahead market:
+I built this app for a power buying desk in the UK day-ahead market.
+It answers two questions:
 
-1. When the desk committed to buy power for a delivery day, what did the
-   latest wind generation forecast actually say?
-2. How accurate was that forecast, in numbers the desk can plan around?
+1. When the desk had to commit to buying power for a day, what did the
+   latest wind forecast say?
+2. How accurate was that forecast?
 
-Live deployment: https://mqx7zv.vercel.app
+Live app: https://mqx7zv.vercel.app
 
-## Why decision time matters
+The key idea is simple. A forecast should only be scored on what was
+published before the buying decision was made. Anything published
+later was not available to the desk, so using it makes the forecast
+look better than it really was.
 
-A forecast can look good if you score it against the last revision
-published before delivery. That revision did not exist when the buying
-decision was made, so scoring against it flatters the numbers. This app
-only uses forecasts that were published at or before the decision moment,
-and the difference is material: for January 2026 the honest day-ahead MAE
-is about 2,009 MW, while scoring against the last revision before
-delivery gives roughly 1,800 MW and hides a large systematic bias.
+## What January 2026 showed
 
-## Headline findings, January 2026
+Scope: purchase decisions made in January 2026 (decision days Jan 1 to
+31, delivery days Jan 2 to Feb 1), 744 hours in total.
 
-- Day-ahead MAE 2,009 MW, RMSE 2,500 MW, over 744 delivery hours.
-- Bias +1,729 MW: the forecast overshot actual wind generation in 84.3%
-  of hours. The miss is mostly bias, not noise. Removing the average bias
-  would cut MAE to about 1,399 MW.
-- Buying on the raw forecast left the desk roughly 1.39 million MWh short
-  across the month in hourly terms (sum of hourly over-forecasts), energy
-  that then has to be covered at balancing prices.
-- The forecast still carries real information: a persistence forecast
-  (yesterday's actuals) scores MAE 3,974 MW, so the day-ahead forecast is
-  about 49% better than that fallback.
+- Average error (MAE) 2,009 MW. Scored the flattering way, against the
+  last forecast before delivery, it would look like about 1,800 MW.
+- The forecast was too high in 84% of hours, by 1,729 MW on average.
+  Most of the error is this bias, not random noise.
+- Buying on the raw forecast left the desk about 1.39 million MWh
+  short over the month, to be covered later at balancing prices.
+- Removing the average bias cuts the error to about 1,399 MW. The
+  forecast still beats the simple fallback of using yesterday's
+  actuals (MAE 3,974 MW) by about half.
 
-## How to run it
+## Run it
 
 With Docker:
 
@@ -40,88 +37,57 @@ With Docker:
 docker compose up --build
 ```
 
-Then open http://localhost:8080. The API is on http://localhost:8000.
+Open http://localhost:8080 (API on http://localhost:8000).
 
-Without Docker, for development:
+Without Docker:
 
 ```bash
-# data, only needed if you want to regenerate it
-python3 api/scripts/ingest.py
-
-# API
-cd api
-pip install -r requirements.txt
+cd api && pip install -r requirements.txt
 uvicorn app.main:app --port 8000
 
-# web, in a second terminal
-cd web
-npm install
-npm run dev
+cd web && npm install && npm run dev
 ```
 
-Then open http://localhost:5173. Vite proxies /api to the API server.
+Open http://localhost:5173.
 
-## Files and directories
+## Files
 
-- `api/app/core.py`: the decision-time logic. Cutoff handling, the hourly
-  join, bias correction inputs, and every metric. Kept free of web code so
-  it can be tested on its own.
-- `api/app/main.py`: FastAPI app with three read endpoints.
-- `api/app/store.py`: loads the precomputed data at startup.
-- `api/scripts/ingest.py`: pulls Elexon data, caches it raw, and writes
-  the processed datasets the API serves.
-- `api/tests/`: pytest suite. The no look-ahead rule is tested directly,
-  including a fixture where a post-gate forecast is closer to the actual
-  and must still be ignored.
-- `web/src/`: React app. `DecisionView.tsx` is the per day view,
+- `api/app/core.py`: all the logic. Decision cutoff, forecast and
+  actual matching, and every metric.
+- `api/app/main.py`: the FastAPI app (three read endpoints).
+- `api/scripts/ingest.py`: downloads the Elexon data and builds the
+  datasets the API serves.
+- `api/tests/`: tests, including one that proves forecasts published
+  after the decision are never used.
+- `web/src/`: the React app. `DecisionView.tsx` is the per day view,
   `AccuracyView.tsx` is the month view.
-- `data/raw/`: cached Elexon responses, gzipped JSON.
-- `data/processed/`: `days.json` (one record per settlement day) and
-  `summary.json` (January metrics). The app ships with these built, so it
-  runs offline.
-- `docker-compose.yml`, `api/Dockerfile`, `web/Dockerfile`: the container
-  setup. The web image is nginx serving the built frontend and proxying
-  /api to the API container.
+- `data/`: cached raw Elexon downloads in `raw/`, built datasets in
+  `processed/`. The app ships with the data built, so it runs offline.
 
-## Data and methodology
+## How the numbers are worked out
 
-Data sources, both from Elexon BMRS and nothing else:
+Data is from Elexon BMRS only: FUELHH for actual wind generation
+(half-hourly) and WINDFOR for forecasts (hourly, published eight
+times a day).
 
-- Actuals: FUELHH dataset, filtered to fuelType WIND, half-hourly.
-- Forecasts: WINDFOR dataset, hourly, published eight times a day.
-
-Definitions I settled on, applied everywhere in the app:
-
-- Scope is purchase decisions made in January 2026, read literally:
-  decision days 1 to 31 January 2026, buying for settlement days
-  2 January to 1 February 2026.
-- A settlement day runs 23:00 GMT on the previous calendar day to
-  23:00 GMT on the day itself.
-- The decision moment is the N2EX day-ahead auction gate closure,
-  09:50 GMT on the day before the settlement day. The decision forecast
-  for each delivery hour is the last WINDFOR publish at or before that
-  moment, in practice the 09:30 GMT publish.
-- Hourly actual generation is the mean of the two FUELHH half hours in
-  that hour, since FUELHH values are MW averaged over a half hour.
-- The bias-corrected forecast subtracts the month's mean signed error.
-  The band on the day chart runs from the 10th to the 90th percentile of
-  the month's signed errors. Both are computed from decision-time errors
-  only.
-- Shortfall for an hour is forecast minus actual when positive, summed in
-  MWh. It is the hourly energy the desk still had to find after buying on
-  the forecast.
-
-The API serves precomputed data rather than calling Elexon per request.
-The January window is fixed, the raw pulls are slow, and precomputing
-makes every number in the app reproducible from the cached raw files.
+- A delivery (settlement) day runs 23:00 GMT to 23:00 GMT.
+- The decision moment is the day-ahead auction gate closure, 09:50 GMT
+  the day before. For each delivery hour I take the last forecast
+  published at or before 09:50, in practice the 09:30 publish.
+- FUELHH is half-hourly and WINDFOR is hourly, so the actual for an
+  hour is the mean of the two half hours.
+- The corrected forecast in the app is the forecast minus the month's
+  average error. The band is the 10th to 90th percentile of the
+  month's errors.
+- The API serves data prepared in advance by the ingest script, it
+  does not call Elexon when you open a page. Every number can be
+  reproduced from the cached raw files in `data/raw/`.
 
 ## A note on AI tools
 
-Most of this is my own work: the data pulls, the decision-time
-definitions, the analysis, and how the two views are laid out. For parts
-of the coding I used AI assistants (Claude and ChatGPT), mostly for
-boilerplate, chart setup, and a first draft of some tests. I reviewed
-everything they produced, changed what did not fit, and checked the
-numbers in the app against the live Elexon API myself. The tests in
-`api/tests/` cover the parts that matter most, the no look-ahead rule
-above all.
+Most of this is my own work: the data pulls, the definitions above,
+the analysis, and the layout of the two views. For parts of the coding
+I used AI assistants (Claude and ChatGPT), mostly for boilerplate,
+chart setup, and a first draft of some tests. I reviewed everything
+they produced and checked the numbers against the live Elexon API
+myself.
